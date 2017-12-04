@@ -3,27 +3,35 @@ import {TodoForm, TodoList} from './components/todo'
 import {addTodo, findById, generateId, toggleTodo, updateTodo, removeTodo, filterTodos} from "./lib/todoHelpers";
 import {pipe, partial} from "./lib/utils";
 import {Alert} from 'react-bootstrap'
+import {loadTodos, createTodo, saveTodo, deleteTodo} from "src/lib/todoService";
 
 class Todo extends React.Component {
     state = {
-        todos: [
-            {id: 1, name: 'Props vs. State', isComplete: true},
-            {id: 2, name: 'Managed vs. Unmanaged components', isComplete: false},
-            {id: 3, name: 'JSX', isComplete: false}
-        ],
+        todos: [],
         currentTodo: ''
+    }
+
+    componentDidMount() {
+        loadTodos()
+            .then(todos => this.setState({todos}))
     }
 
     handleRemove = (id, event) => {
         event.preventDefault()
         const updatedTodos = removeTodo(this.state.todos, id)
         this.setState({todos: updatedTodos})
+        deleteTodo(id)
+            .then(() => this.showTempMessage('Todo deleted'))
     }
 
     handleToggle = (id) => {
-        const getUpdatedTodos = pipe(findById, toggleTodo, partial(updateTodo, this.state.todos))
-        const updatedTodos = getUpdatedTodos(id, this.state.todos)
+        const getToggledTodo = pipe(findById, toggleTodo)
+        const updated = getToggledTodo(id, this.state.todos)
+        const getUpdatedTodos = partial(updateTodo, this.state.todos)
+        const updatedTodos = getUpdatedTodos(updated)
         this.setState({todos: updatedTodos})
+        saveTodo(updated)
+            .then(() => this.showTempMessage('Todo updated'))
     }
 
     handleSubmit = (event) => {
@@ -36,6 +44,13 @@ class Todo extends React.Component {
             currentTodo: '',
             errorMessage: ''
         })
+        createTodo(newTodo)
+            .then(() => this.showTempMessage('Todo added'))
+    }
+
+    showTempMessage = (msg) => {
+        this.setState({message: msg})
+        setTimeout(() => this.setState({message: ''}), 2500)
     }
 
     handleEmptySubmit = (event) => {
@@ -54,6 +69,7 @@ class Todo extends React.Component {
         return (
             <div>
                 {this.state.errorMessage && <Alert bsStyle="warning">{this.state.errorMessage}</Alert>}
+                {this.state.message && <Alert>{this.state.message}</Alert>}
                 <TodoForm handleSubmit={submitHandler}
                           handleInputChange={this.handleInputChange}
                           currentTodo={this.state.currentTodo}/>

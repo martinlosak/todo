@@ -11,7 +11,7 @@ export const TodoItem = (props) => {
             <input type="checkbox"
                    onChange={handleToggle}
                    checked={props.isComplete}/> {props.name}
-            <a href='#' onClick={handleRemove}> x</a>
+            <a role='button' onClick={handleRemove}> x</a>
         </li>
     )
 }

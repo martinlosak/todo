@@ -6,6 +6,7 @@ const home = '/todos'
 
 const Main = () => (
     <Switch>
+        <Route exact path="/todos" component={Todo}/>
         <Route path="/todos/:state" component={Todo}/>
         <Redirect to={home}/>
     </Switch>

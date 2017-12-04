@@ -8,9 +8,9 @@ const Header = () => (
             <Navbar.Brand>TODO App</Navbar.Brand>
         </Navbar.Header>
         <Nav>
-            <NavItem><Link to="/">All</Link></NavItem>
-            <NavItem><Link to="/active">Active</Link></NavItem>
-            <NavItem><Link to="/completed">Complete</Link></NavItem>
+            <NavItem><Link to="/todos">All</Link></NavItem>
+            <NavItem><Link to="/todos/active">Active</Link></NavItem>
+            <NavItem><Link to="/todos/complete">Complete</Link></NavItem>
         </Nav>
     </Navbar>
 )
