@@ -1,18 +1,16 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Navbar, Nav, NavItem} from 'react-bootstrap'
+import './style.css'
 
-const Header = () => (
-    <Navbar>
-        <Navbar.Header>
-            <Navbar.Brand>TODO App</Navbar.Brand>
-        </Navbar.Header>
-        <Nav>
-            <NavItem><Link to="/todos">All</Link></NavItem>
-            <NavItem><Link to="/todos/active">Active</Link></NavItem>
-            <NavItem><Link to="/todos/complete">Complete</Link></NavItem>
-        </Nav>
-    </Navbar>
-)
+export const Header = () => {
+
+    return (
+        <div className='Header'>
+            <Link to="/todos">All</Link>
+            <Link to="/todos/active">Active</Link>
+            <Link to="/todos/complete">Complete</Link>
+        </div>
+    )
+}
 
 export default Header
